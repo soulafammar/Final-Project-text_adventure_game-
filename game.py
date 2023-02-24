@@ -41,9 +41,10 @@ print("Your eyelids flutter open, and you wake up from a dream about brown sugar
 
 
 #name of room -> [[items],(allowed_movements),"description"]
-
-rooms = {[0,-1,0]:[["hamlet"],("south"),"You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them. An abandoned copy lies on a desk in front of you."],
-		"hiddenRoom":["key"]}
+#dictionary of all the rooms
+rooms = {[0,0,0]:[[]("south"), "math class text"]
+		[0,-1,0]:[["hamlet"],("south"),"You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them. An abandoned copy lies on a desk in front of you."],
+		"hiddenRoom":[["key"],("west"), "hidden room text"]}
 
 	
 while standInVar == 0:
