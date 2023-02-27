@@ -40,11 +40,18 @@ print("Your eyelids flutter open, and you wake up from a dream about brown sugar
 	#specificRoomFunction(): ---> this room function will display the flavor text, include items, determine which movement directions are possible
 
 
-#name of room -> [[items],(allowed_movements),"description"]
+#location of room -> [[items],(allowed_movements),"description"]
 #dictionary of all the rooms
-rooms = {[0,0,0]:[[]("south"), "math class text"]
-		[0,-1,0]:[["hamlet"],("south"),"You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them. An abandoned copy lies on a desk in front of you."]
-		"hiddenRoom":[["key"],("west"), "hidden room text"]}
+rooms = {[0,0,0]:[[],("south"), "math class text"]
+		[0,-2,0]:[["hamlet"],("south"),"You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them. An abandoned copy lies on a desk in front of you."],
+		"hiddenRoom":[["key"],("west"), "hidden room text"]
+		[1,0,0]:[[],("north","west","east"), "You find yourself in a desolate hallway. The overhead lights make the same buzzing sound you've become so accustomed to in math class. There's a faint sound of people conversing to the west, and music playing to the east."]
+		[1,-1,0]:[[],("west","east"),"You walk down the hallway. The sound of voices overlapping each other gets louder and louder. goldfish kid here."]
+		[1,-2,0]:[[],("west","east","north"),"suddenly you here noise from ANOTHER direction, north, see a door way to english class,"]
+		[1,-3,0]:[["vending machine soda"],("west","east"), "here is the vending machine spot"]
+		[1,-4,0]:[["escape door"],("north","east"),"south side of cafeteria"]
+		[0,-4,0]:[["fairy tales book"],("south"),"were are in the cafeteria, theres popular kids table, and a kid playing video games"]}
+#should i add an obstacles element to the list?
 
 	
 while standInVar == 0:
