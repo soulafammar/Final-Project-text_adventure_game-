@@ -1,3 +1,44 @@
+
+entranceOccur = 1
+
+def introStuff():
+	print("intro text")
+	mathClass(1)
+
+
+def mathClass(entranceOccur):
+	entranceCount = 0
+	entranceCount += entranceOccur
+	if entranceCount < 1:
+		print("initial math class text")
+	else:
+		print("math class text")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 rooms = {(0,0,0):["Math Class",[],[], ("south"), (), "math class text"],
 		(0,-2,0):["English Class",["hamlet"], [], ("south"), ("grab"), "You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them. An abandoned copy lies on a desk in front of you."],
 		"hiddenRoom":["Hidden Room",["key"], [], ("west"), ("grab"), "hidden room text"],
