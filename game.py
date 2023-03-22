@@ -11,13 +11,32 @@ rooms = {(0,0,0):["Math Class",[],[], ("south"), (), "math class text"],
 print("this is where the intro text will go. Potential commands: grab, use, talk, look, examine, help. Potential movements: up, down, north, south, west, east. ")
 
 
-class Rooms():
+class Room():
 	def __init__(self):
 		self.allowed_commands = []
 		self.allowed_movements = []
-		self.room_items = {}
 		self.initial_text = []
-		
+
+class ObjectRoom(Room):
+	def __init__(self):
+		super().__init__()
+		self.room_items = {}
+		self.room_text = {}
+	def new(attempt):
+		pass
+#************************new code
+mathClass (0,0,0) = Room()
+mathClass.initial_text["initial math class text"]
+mathClass.allowed_movements.append("south")
+
+englishClass = ObjectRoom()
+englishClass.room_items["hamlet"] = "You grab the book. The cover reads Hamlet"
+englishClass.room_text[hamlet] = "You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them. An abandoned copy lies on a desk in front of you."
+englishClass.room_text[none] = "You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them."
+#********************
+#CREATE A FUNCTION THAT TAKES PLAYER LOCATION AND GIVES ROOM NAME TO USE TO CALL DESCRIPTION, OBJECT , ETC
+
+
 
 
 #initalizes player position (x,y,z)/(-north/+south,-west/+east,-down/+up) at the origin, math class
@@ -95,12 +114,12 @@ last_direction = None
 response = input()
 while quitGame == False: #could be a quit variable
 	#get current position variables
-	location_name, items, obstacles, allowed_movements, allowed_commands, description = rooms[tuple(playerPosition)]
+	current_room = rooms[tuple(playerPosition)]
 	#print(description.get(playerPosition, "not valid"))
 	try:
 		print(description[last_direction]) #calls the specific text for the specific direction/ MUST TURN DIRECTIONS INTO ANOTHER DICTIONARY
 	except TypeError:
-		print(description)
+		print(current_room.description)
 	
 	print(f"\nPossible exits: {allowed_movements}")
 	response = input().lower()
