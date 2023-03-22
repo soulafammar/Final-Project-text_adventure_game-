@@ -11,6 +11,15 @@ rooms = {(0,0,0):["Math Class",[],[], ("south"), (), "math class text"],
 print("this is where the intro text will go. Potential commands: grab, use, talk, look, examine, help. Potential movements: up, down, north, south, west, east. ")
 
 
+class Rooms():
+	def __init__(self):
+		self.allowed_commands = []
+		self.allowed_movements = []
+		self.room_items = {}
+		self.initial_text = []
+		
+
+
 #initalizes player position (x,y,z)/(-north/+south,-west/+east,-down/+up) at the origin, math class
 playerPosition = [0,0,0]
 inventory = []
@@ -88,7 +97,11 @@ while quitGame == False: #could be a quit variable
 	#get current position variables
 	location_name, items, obstacles, allowed_movements, allowed_commands, description = rooms[tuple(playerPosition)]
 	#print(description.get(playerPosition, "not valid"))
-	print(description)
+	try:
+		print(description[last_direction]) #calls the specific text for the specific direction/ MUST TURN DIRECTIONS INTO ANOTHER DICTIONARY
+	except TypeError:
+		print(description)
+	
 	print(f"\nPossible exits: {allowed_movements}")
 	response = input().lower()
 
