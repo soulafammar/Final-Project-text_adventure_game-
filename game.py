@@ -1,4 +1,7 @@
 
+#maybe create a string class?
+#how about a direction class?
+
 entranceOccur = 1
 
 def introStuff():
