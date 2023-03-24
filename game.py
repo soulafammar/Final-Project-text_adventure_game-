@@ -23,6 +23,7 @@ class ObjectRoom(Room):
 		self.room_items = {}
 		self.room_text = {}
 		self.usable_items = []
+		self.obstacle = []
 	def new(attempt):
 		pass
 #************************new code
@@ -35,6 +36,10 @@ desolateHallway.allowed_movements.append("east","west")
 desolateHallway.initial_text.append("You find yourself in a desolate hallway. The overhead lights make the same buzzing sound you've become so accustomed to in math class. There's a faint sound of people conversing to the west, and music playing to the east.")
 
 goldfishKid = ObjectRoom() #obstacle room - create new child class
+goldfishKid.allowed_movements.append("east","west")
+goldfishKid.allowed_commands.append("use")
+goldfishKid.room_text[hungryKid] = "this is where the kid who wants a snack is"
+goldfishKid.room_text[none] = "no one here, just a hallway"
 
 hallwayEnglish = Room()
 hallwayEnglish.allowed_movements.append("east","west")
@@ -43,9 +48,7 @@ hallwayEnglish.initial_text.append("suddenly you here noise from ANOTHER directi
 vendingMachine = ObjectRoom() #obstacle room
 vendingMachine.allowed_movements.append("east","west")
 vendingMachine.allowed_commands.append("use")
-vendingMachine.usable_items.append("dollar")
-
-
+vendingMachine.usable_items["dollar"] = "You put the dollar bill into the vending machine. It whirs, then drops out an energy drink can."
 
 englishClass = ObjectRoom()
 englishClass.allowed_movements.append("south")
@@ -53,6 +56,13 @@ englishClass.allowed_commands.append("grab")
 englishClass.room_items["hamlet"] = "You grab the book. The cover reads Hamlet"
 englishClass.room_text[hamlet] = "You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them. An abandoned copy lies on a desk in front of you."
 englishClass.room_text[none] = "You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them."
+
+hallwayTheater = ObjectRoom()
+hallwayTheater.allowed_movements.append("east","west") #add north/ up once the player has talked to the gamer or has the fairy tale book
+hallwayTheater.allowed_commands.append("use")
+hallwayTheater.room_text[theaterKid] = 
+
+
 #********************
 #CREATE A FUNCTION THAT TAKES PLAYER LOCATION AND GIVES ROOM NAME TO USE TO CALL DESCRIPTION, OBJECT , ETC
 
@@ -125,8 +135,9 @@ callRoom = {[0,0,0]: mathClass,
 			[1,-5,0]: EXIT,
 			[0,-5,0]: laptopKid,
 			[1,1,0]: hallwayTheater,
-			[1,2,0]: theaterRoom,
-			[0,1,0]: goldfishBox
+			[1,2,0]: theaterKid,
+			[1,3,0]: theaterRoom,
+			[0,3,0]: goldfishBox
 			}
 
 
