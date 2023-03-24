@@ -22,6 +22,7 @@ class ObjectRoom(Room):
 		super().__init__()
 		self.room_items = {}
 		self.room_text = {}
+		self.usable_items = []
 	def new(attempt):
 		pass
 #************************new code
@@ -29,7 +30,26 @@ mathClass (0,0,0) = Room()
 mathClass.initial_text["initial math class text"]
 mathClass.allowed_movements.append("south")
 
+desolateHallway = Room()
+desolateHallway.allowed_movements.append("east","west")
+desolateHallway.initial_text.append("You find yourself in a desolate hallway. The overhead lights make the same buzzing sound you've become so accustomed to in math class. There's a faint sound of people conversing to the west, and music playing to the east.")
+
+goldfishKid = ObjectRoom() #obstacle room - create new child class
+
+hallwayEnglish = Room()
+hallwayEnglish.allowed_movements.append("east","west")
+hallwayEnglish.initial_text.append("suddenly you here noise from ANOTHER direction, north, see a door way to english class,")
+
+vendingMachine = ObjectRoom() #obstacle room
+vendingMachine.allowed_movements.append("east","west")
+vendingMachine.allowed_commands.append("use")
+vendingMachine.usable_items.append("dollar")
+
+
+
 englishClass = ObjectRoom()
+englishClass.allowed_movements.append("south")
+englishClass.allowed_commands.append("grab")
 englishClass.room_items["hamlet"] = "You grab the book. The cover reads Hamlet"
 englishClass.room_text[hamlet] = "You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them. An abandoned copy lies on a desk in front of you."
 englishClass.room_text[none] = "You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them."
@@ -94,7 +114,20 @@ def command(action): #this fucntion doesn't need further restrictions, because t
 	#elif action == "talk":
 	#	#display hidden dialogue text for certain character
 
-
+callRoom = {[0,0,0]: mathClass,
+			[1,0,0]: desolateHallway,
+			[1,-1,0]: goldfishKid,
+			[1,-2,0]: hallwayEnglish,
+			[0,-2,0]: englishClass,
+			[1,-3,0]: vendingMachine,
+			[1,-4,0]: CafEntrance,
+			[0,-4,0]: kidsTable,
+			[1,-5,0]: EXIT,
+			[0,-5,0]: laptopKid,
+			[1,1,0]: hallwayTheater,
+			[1,2,0]: theaterRoom,
+			[0,1,0]: goldfishBox
+			}
 
 
 #PROBLEMS:
@@ -114,14 +147,15 @@ last_direction = None
 response = input()
 while quitGame == False: #could be a quit variable
 	#get current position variables
-	current_room = rooms[tuple(playerPosition)]
+	current_room = callRoom[playerPosition]
+	print(current_room)
 	#print(description.get(playerPosition, "not valid"))
-	try:
-		print(description[last_direction]) #calls the specific text for the specific direction/ MUST TURN DIRECTIONS INTO ANOTHER DICTIONARY
-	except TypeError:
-		print(current_room.description)
+	#try:
+	#	print(description[last_direction]) #calls the specific text for the specific direction/ MUST TURN DIRECTIONS INTO ANOTHER DICTIONARY
+	#except TypeError:
+	#	print(current_room.description)
 	
-	print(f"\nPossible exits: {allowed_movements}")
+	print(f"\nPossible exits: {current_room.allowed_movements}")
 	response = input().lower()
 
 	if response in potential_movements:
