@@ -16,6 +16,8 @@ class Room():
 		self.allowed_commands = []
 		self.allowed_movements = []
 		self.initial_text = []
+		self.after_text = []
+		self.count = 0
 
 class ObjectRoom(Room):
 	def __init__(self):
@@ -33,10 +35,11 @@ class ObstacleRoom(Room):
 		self.room_items = {}
 		self.room_text = {}
 		self.usable_item = {}
-		self.obstacle = {}
+		self.obstacle = []
 #************************new code
 mathClass = Room()
-mathClass.initial_text.append("initial math class text")
+mathClass.initial_text.append("Your eyelids flutter open, and you wake up from a dream about brown sugar boba (dream is important later) and find yourself in your math class. Forgetting the pleasures of your dream, you take in your surroundings: exhausted 17 year-olds, graphing calculators, papers spread out on uneven desks. Your teacher is droning on about logarithms and their properties. The buzz of the fluorescent ceiling lights is ceaseless. You look towards the door longingly. Your friend sitting besides you catches your glance, and gives you a sympathetic smile. You look back at your teacher and ask to use the restroom. She nods, continuing to describe the change of base properties of both natural and common log.")
+mathClass.after_text.append("You are back in math class. You take in your surroundings: exhausted 17 year-olds, graphing calculators, papers spread out on uneven desks. You vaguely remember a dream about your favorite bubbly drink.")
 mathClass.allowed_movements.append("south")
 
 desolateHallway = Room()
@@ -46,8 +49,8 @@ desolateHallway.initial_text.append("You find yourself in a desolate hallway. Th
 goldfishKid = ObstacleRoom() #obstacle room - create new child class
 goldfishKid.allowed_movements.extend(["east","west"])
 goldfishKid.allowed_commands.append("use")
-goldfishKid.usable_item["goldfish"] = "You pull out a the bag of Disney Princess Edition Goldfish and hand it to the boy. A sigh escapes your lips."
-goldfishKid.obstacle["hungryKid"] = "The boy gratefully accepts the goldfish, and gives you a dollar bill as a token of appreciation."
+goldfishKid.usable_item["goldfish"] = "You pull out a the bag of Disney Princess Edition Goldfish and hand it to the boy. A sigh escapes your lips.The boy gratefully accepts the goldfish, and gives you a dollar bill as a token of appreciation."
+goldfishKid.obstacle.append("hungryKid") 
 goldfishKid.room_items["dollar"] = "You take the dollar, fold it up, and place it in your pocket."
 goldfishKid.room_text["hungryKid"] = "this is where the kid who wants a snack is"
 goldfishKid.room_text['none'] = "no one here, just a hallway"
@@ -90,6 +93,9 @@ englishClass.room_text["none"] = "You enter a classroom full of chattering stude
 
 #********************
 #CREATE A FUNCTION THAT TAKES PLAYER LOCATION AND GIVES ROOM NAME TO USE TO CALL DESCRIPTION, OBJECT , ETC
+#calls the text for when an object is taken
+object_taken_text = {"hamlet": "You grab the book. The cover reads Hamlet",
+				"dollar": "You take the dollar, fold it up, and place it in your pocket."}
 
 
 
@@ -103,17 +109,7 @@ potential_commands = ["grab", "use", "talk", "look", "examine", "help"]
 help_text = "Potential commands: grab, use, talk, look, examine, help. Potential movements: up, down, north, south, west, east."
 
 print("...")
-print("Your eyelids flutter open, and you wake up from a dream about brown sugar boba (dream is important later) and find yourself in your math class. Forgetting the pleasures of your dream, you take in your surroundings: exhausted 17 year-olds, graphing calculators, papers spread out on uneven desks. Your teacher is droning on about logarithms and their properties. The buzz of the fluorescent ceiling lights is ceaseless. You look towards the door longingly. Your friend sitting besides you catches your glance, and gives you a sympathetic smile. You look back at your teacher and ask to use the restroom. She nods, continuing to describe the change of base properties of both natural and common log.")
-#print(f"Possible exits: {rooms[tuple(playerPosition)][3]}")
 
-#location of room -> ["name of room",[items],[obstacles],(allowed_movements),(allowed_commands),"flavor text"]
-#dictionary of all the rooms
-
-
-#should i do this?
-#roomText = {(0,0,0): ["math class text"]
-			#(0,-2,0): ["You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them. An abandoned copy lies on a desk in front of you."]
-			#}
 def move(direction): #this fucntion doesn't need further restrictions, because the only time it is called is after it passes certain resrictions
 	if direction == "west":
 		playerPosition[1] += -1
@@ -173,17 +169,6 @@ callRoom = {(0,0,0): mathClass,
 			}
 
 
-#PROBLEMS:
-#the biggest situation currently is the fact that the flavor text of a room stays the same no matter what direction the player
-#is coming from, or whether or not an object has already been taken, etc
-#solutions?:
-#1) create an adition to the dictionary for flavor text that sometimes appears
-#2) create a flavor text dictionary within the dictionary for each room
-	#have a last movement variable that can be used to choose what type of flavor text
-#3) create a brand new flavor text dictionary for each room
-	#have a last movement variable that can be used to choose what type of flavor text
-
-
 quitGame = 0
 #THIS IS THE MAIN WHILE LOOP THAT DECIDES WHAT TO DO WITH PLAYER RESPONSES
 last_direction = None
@@ -193,13 +178,19 @@ while quitGame == False: #could be a quit variable
 	current_room = callRoom[tuple(playerPosition)]
 	
 	if current_room.__class__.__name__ == "Room":
-		print(current_room.initial_text)
+		if current_room.count < 1:
+			print(current_room.initial_text)
+			current_room.count += 1
+		else:
+			print(current_room.after_text)
+		
 
 	elif current_room.__class__.__name__ == "ObjectRoom":
-		print(current_room.room_text[dict.values(current_room.room_items)])
+		print(current_room.room_text[current_room.room_items[0]])
 	
 	else:
-		print(current_room.room_text[dict.values(current_room.obstacle)])
+		#text_decision = 
+		print(current_room.room_text[current_room.obstacle[0]])
 	
 	print(f"\nPossible exits: {current_room.allowed_movements}")
 	
