@@ -23,9 +23,17 @@ class ObjectRoom(Room):
 		self.room_items = {}
 		self.room_text = {}
 		self.usable_item = {}
-		self.obstacle = {}
+		
 	def new(attempt):
 		pass
+
+class ObstacleRoom(Room):
+	def __init__(self):
+		super().__init__()
+		self.room_items = {}
+		self.room_text = {}
+		self.usable_item = {}
+		self.obstacle = {}
 #************************new code
 mathClass = Room()
 mathClass.initial_text.append("initial math class text")
@@ -35,18 +43,21 @@ desolateHallway = Room()
 desolateHallway.allowed_movements.extend(["east","west"])
 desolateHallway.initial_text.append("You find yourself in a desolate hallway. The overhead lights make the same buzzing sound you've become so accustomed to in math class. There's a faint sound of people conversing to the west, and music playing to the east.")
 
-goldfishKid = ObjectRoom() #obstacle room - create new child class
+goldfishKid = ObstacleRoom() #obstacle room - create new child class
 goldfishKid.allowed_movements.extend(["east","west"])
 goldfishKid.allowed_commands.append("use")
-#goldfishKid.obstacle
+goldfishKid.usable_item["goldfish"] = "You pull out a the bag of Disney Princess Edition Goldfish and hand it to the boy. A sigh escapes your lips."
+goldfishKid.obstacle["hungryKid"] = "The boy gratefully accepts the goldfish, and gives you a dollar bill as a token of appreciation."
+goldfishKid.room_items["dollar"] = "You take the dollar, fold it up, and place it in your pocket."
 goldfishKid.room_text["hungryKid"] = "this is where the kid who wants a snack is"
 goldfishKid.room_text['none'] = "no one here, just a hallway"
+
 
 hallwayEnglish = Room()
 hallwayEnglish.allowed_movements.extend(["east","west","north"])
 hallwayEnglish.initial_text.append("suddenly you here noise from ANOTHER direction, north, see a door way to english class,")
 
-vendingMachine = ObjectRoom() #obstacle room
+vendingMachine = ObstacleRoom() #obstacle room
 vendingMachine.allowed_movements.extend(["east","west"])
 vendingMachine.allowed_commands.append("use")
 vendingMachine.usable_item["dollar"] = "You pull out the dollar bill and put it into the vending machine. It whirs, then drops out an energy drink can."
@@ -183,9 +194,13 @@ while quitGame == False: #could be a quit variable
 	
 	if current_room.__class__.__name__ == "Room":
 		print(current_room.initial_text)
-	else:
-		print(current_room.room_text[dict.values(current_room.room_items)])
 
+	elif current_room.__class__.__name__ == "ObjectRoom":
+		print(current_room.room_text[dict.values(current_room.room_items)])
+	
+	else:
+		print(current_room.room_text[dict.values(current_room.obstacle)])
+	
 	print(f"\nPossible exits: {current_room.allowed_movements}")
 	
 	response = input().lower()
@@ -198,7 +213,7 @@ while quitGame == False: #could be a quit variable
 			print("You can't go that way, you silly goose.")
 	
 	if response in potential_commands:
-		if response in allowed_commands:
+		if response in current_room.allowed_commands:
 			command(response)
 		else:
 			print("You can't do that right now.")
