@@ -22,10 +22,21 @@ class Room():
 class ObjectRoom(Room):
 	def __init__(self):
 		super().__init__()
-		self.room_items = {}
 		self.room_text = {}
 		self.usable_item = {}
-		
+	
+	room_items = []
+
+	def text_change(self):
+		if len(self.room_items) == 0:
+			print(self.room_text["none"])
+		else: #len(room_items) > 1:
+			for i in range(len(self.room_items)):
+				thing = ""
+				thing += str(self.room_items[i])
+				print(thing)
+			print(self.room_text[thing])
+
 	def new(attempt):
 		pass
 
@@ -77,8 +88,9 @@ laptopKid = ObjectRoom()
 englishClass = ObjectRoom()
 englishClass.allowed_movements.append("south")
 englishClass.allowed_commands.append("grab")
-englishClass.room_items["hamlet"] = "You grab the book. The cover reads Hamlet"
-englishClass.room_text["hamlet"] = "You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them. An abandoned copy lies on a desk in front of you."
+englishClass.room_items.append("hamlet")
+#englishClass.room_items["hamlet"] = "You grab the book. The cover reads Hamlet"
+englishClass.room_text['hamlet'] = "You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them. An abandoned copy lies on a desk in front of you."
 englishClass.room_text["none"] = "You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them."
 
 #theaterRoom =
@@ -104,8 +116,9 @@ object_taken_text = {"hamlet": "You grab the book. The cover reads Hamlet",
 playerPosition = [0,0,0]
 inventory = []
 
+potential_inputs = ["grab", "use", "talk", "look", "examine", "help", "inventory", "up", "down", "north", "south", "west", "east"]
 potential_movements = ["up","down","north","south", "west", "east"]
-potential_commands = ["grab", "use", "talk", "look", "examine", "help"]
+potential_commands = ["grab", "use", "talk", "look", "examine", "help", "inventory"]
 help_text = "Potential commands: grab, use, talk, look, examine, help. Potential movements: up, down, north, south, west, east."
 
 print("...")
@@ -130,8 +143,9 @@ def move(direction): #this fucntion doesn't need further restrictions, because t
 
 def command(action): #this fucntion doesn't need further restrictions, because the only time it is called is after it passes certain resrictions
 	if action == "grab":
-		inventory.append(current_room.room_items)
-		del current_room.room_items
+		inventory.append(current_room.room_items[0])
+		print(object_taken_text[current_room.room_items[0]])
+		del current_room.room_items[0]
 		
 	elif action == "use":
 		if current_room.usable_item in inventory:
@@ -150,6 +164,9 @@ def command(action): #this fucntion doesn't need further restrictions, because t
 	#	#display hidden flavor text
 	elif action == "help":
 		print(help_text)
+	
+	elif action == "inventory":
+		print(inventory)
 	#elif action == "talk":
 	#	#display hidden dialogue text for certain character
 
@@ -176,7 +193,7 @@ response = input()
 while quitGame == False: #could be a quit variable
 	#get current position variables
 	current_room = callRoom[tuple(playerPosition)]
-	
+	current_room_check = current_room
 	if current_room.__class__.__name__ == "Room":
 		if current_room.count < 1:
 			print(current_room.initial_text)
@@ -184,32 +201,43 @@ while quitGame == False: #could be a quit variable
 		else:
 			print(current_room.after_text)
 		
-
 	elif current_room.__class__.__name__ == "ObjectRoom":
-		print(current_room.room_text[current_room.room_items[0]])
+		current_room.text_change()
+
+	#elif current_room.__class__.__name__ == "ObjectRoom":
+	#	print(current_room.room_text[current_room.room_items[0]])
 	
-	else:
+	#else:
 		#text_decision = 
-		print(current_room.room_text[current_room.obstacle[0]])
+	#	print(current_room.room_text[current_room.obstacle[0]])
 	
 	print(f"\nPossible exits: {current_room.allowed_movements}")
-	
-	response = input().lower()
-
-	if response in potential_movements:
-		if response in current_room.allowed_movements:
-			move(response)
-			#last_direction = response
+	while current_room_check == current_room:
+		response = input().lower()
+		if response in potential_inputs:
+			if response in potential_movements:
+				if response in current_room.allowed_movements:
+					move(response)
+					#last_direction = response
+					break
+				else:
+					print("You can't go that way, you silly goose.")
+				
+			
+			if response in potential_commands:
+				if response in current_room.allowed_commands:
+					command(response)
+				elif response == "inventory":
+					print(inventory)
+				elif response == "help":
+					print(help_text)
+				else:
+					print("You can't do that right now.")
 		else:
-			print("You can't go that way, you silly goose.")
+			print("I don't know what you mean. Type 'help' to see what you can do.")
 	
-	if response in potential_commands:
-		if response in current_room.allowed_commands:
-			command(response)
-		else:
-			print("You can't do that right now.")
-	
-	if response == "quit":
-		confirmation = input("Are you sure you want to quit the game? You'll have to restart. (yes/no)")
-		if confirmation.lower == "yes":
-			quitGame = 1
+			
+		if response == "quit":
+			confirmation = input("Are you sure you want to quit the game? You'll have to restart. (yes/no)")
+			if confirmation.lower == "yes":
+				quitGame = 1
