@@ -37,7 +37,7 @@ desolateHallway.initial_text.append("You find yourself in a desolate hallway. Th
 
 goldfishKid = ObjectRoom() #obstacle room - create new child class
 goldfishKid.allowed_movements.extend(["east","west"])
-goldfishKid.allowed_commands.append("use")
+goldfishKid.allowed_commands.append("use")#calls roomitems but there are no items just an obstacle/ use try/except?
 #goldfishKid.obstacle
 goldfishKid.room_text["hungryKid"] = "this is where the kid who wants a snack is"
 goldfishKid.room_text['none'] = "no one here, just a hallway"
