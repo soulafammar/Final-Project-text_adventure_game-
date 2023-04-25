@@ -1,13 +1,3 @@
-rooms = {(0,0,0):["Math Class",[],[], ("south"), (), "math class text"],
-		(0,-2,0):["English Class",["hamlet"], [], ("south"), ("grab"), "You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them. An abandoned copy lies on a desk in front of you."],
-		"hiddenRoom":["Hidden Room",["key"], [], ("west"), ("grab"), "hidden room text"],
-		(1,0,0):["Hallway outside math class",[], [], ("north","west","east"), (), "You find yourself in a desolate hallway. The overhead lights make the same buzzing sound you've become so accustomed to in math class. There's a faint sound of people conversing to the west, and music playing to the east."],
-		(1,-1,0):["Goldfish Kid",[], ["goldfish kid"],("west","east"), ("use"), "You walk down the hallway. The sound of voices overlapping each other gets louder and louder. goldfish kid here."],
-		(1,-2,0):[[],("west","east","north"),"suddenly you here noise from ANOTHER direction, north, see a door way to english class,"],
-		(1,-3,0):[["vending machine soda"],("west","east"), "here is the vending machine spot"],
-		(1,-4,0):[["escape door"],("north","east"),"south side of cafeteria"],
-		(0,-4,0):[["fairy tales book"],("south"),"were are in the cafeteria, theres popular kids table, and a kid playing video games"]}
-
 print("this is where the intro text will go. Potential commands: grab, use, talk, look, examine, help. Potential movements: up, down, north, south, west, east. ")
 
 
@@ -17,10 +7,7 @@ class Room():
 		self.allowed_movements = []
 		self.initial_text = []
 		self.after_text = []
-	count = 0
-
-	#def text_decision(self):
-	#	if global count > 0
+		self.count = 0
 
 class ObjectRoom(Room):
 	def __init__(self):
@@ -38,14 +25,6 @@ class ObjectRoom(Room):
 			print(self.room_text["none"])
 			#print(f"Possible exits: {self.allowed_movements}")
 
-		#if len(self.room_items) == 0:
-		#	print(self.room_text["none"])
-		#else: #len(room_items) > 1:
-		#	for i in range(len(self.room_items)):
-		#		thing = ""
-		#		thing += str(self.room_items[i])
-		#		print(thing)
-		#	print(self.room_text[thing])
 
 	def new(attempt):
 		pass
@@ -97,7 +76,10 @@ vendingMachine = ObstacleRoom() #obstacle room
 vendingMachine.allowed_movements.extend(["east","west"])
 vendingMachine.allowed_commands.append("use")
 vendingMachine.room_item = "energy drink"
+vendingMachine.obstacle = "vendingMachine"
 vendingMachine.usable_item["dollar"] = "You pull out the dollar bill and put it into the vending machine. It whirs, then drops out an energy drink can."
+vendingMachine.room_text["none"] = "here is the vending machine, there's an empty slot where the energy drink was"
+vendingMachine.room_text["vendingMachine"] = "here is the vending machine, oh look there's an energy drink"
 
 cafEntrance = Room()
 cafEntrance.allowed_movements.extend(["north","east","west"])
@@ -105,7 +87,20 @@ cafEntrance.after_text.append("You are in very large, very noisy lunchroom. Grou
 cafEntrance.initial_text.append("You are in very large, very noisy lunchroom. Groups of circular tables crowd the place, each packed with kids eating, talking, and laughing. To the north, you see an especially judgmental-looking group of teenagers surrounding a table, sporting name-brand shoes, backpacks, and... pencils? I didn't even know they sold those. To the west you can see a set of double doors leading outside, a blessed exit.")
 #EXIT = pass #we'll deal with that later
 
-laptopKid = ObjectRoom()
+laptopKid = ObstacleRoom()
+laptopKid.room_text["none"] = "oh look its the kid, you already talked to him"
+laptopKid.room_text["laptopKid"] = "oh look its the kid, you should talk to him"
+laptopKid.usable_item["monster"] = "You offer the energy drink, and the boy gratefully takes the can. He pops it open and chugs it down within seconds. He looks ready to talk."
+laptopKid.allowed_commands.extend(["use","talk"])
+laptopKid.allowed_movements.extend(["east","south"])
+laptopKid.obstacle = "laptopKid"
+
+kidsTable = ObjectRoom()
+kidsTable.allowed_movements.extend(["south","west"])
+kidsTable.allowed_commands.append("grab")
+kidsTable.room_item = "fairy tales"
+kidsTable.room_text["fairy tales"] = "You are right next to the group of kids. Being so close to them makes you feel incredibly nervous. Your legs stiffen. You realize your shoes are untied, and that your socks are mismatched. The room starts to feel hotter, and one of the kids glances your way. You quickly look down at the floor, and see something under their table."
+kidsTable.room_text["none"] = "You are right next to the group of kids. Being so close to them makes you feel incredibly nervous. Your legs stiffen. You realize your shoes are untied, and that your socks are mismatched. The room starts to feel hotter, and one of the kids glances your way. You quickly look down at the floor."
 
 
 englishClass = ObjectRoom()
@@ -115,6 +110,14 @@ englishClass.room_item = "hamlet"
 #englishClass.room_items["hamlet"] = "You grab the book. The cover reads Hamlet"
 englishClass.room_text['hamlet'] = "You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them. An abandoned copy lies on a desk in front of you."
 englishClass.room_text["none"] = "You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them."
+
+theaterKid = ObstacleRoom()
+theaterKid.allowed_movements.extend(["west","east"])
+theaterKid.allowed_commands.extend(["use","talk"])
+theaterKid.obstacle = "theaterKid"
+theaterKid.room_text["theaterKid"] = '''A boy in bizarre clothing blocks your way to the entrance. He exclaims: "To be, or not to be, that is the question." You stare at him blankly. "It's Shakespeare," he says, exasperated. "You have to finish the line."'''
+theaterKid.room_text["none"] = "You are in the hallway. To the east there is a set of double doors. You can hear instruments playing from behind the door. To the north is flight of stairs."
+
 
 #theaterRoom =
 
@@ -182,7 +185,7 @@ def command(action): #this fucntion doesn't need further restrictions, because t
 			current_room.text_decision()
 		
 	#elif action == "examine":
-	#	#display hidden flavor text
+	#	display hidden flavor text
 	elif action == "help":
 		print(help_text)
 	
@@ -198,12 +201,12 @@ callRoom = {(0,0,0): mathClass,
 			(0,-2,0): englishClass,
 			(1,-3,0): vendingMachine,
 			(1,-4,0): cafEntrance,
-			#[0,-4,0]: kidsTable,
-			#[1,-5,0]: EXIT,
-			#[0,-5,0]: laptopKid,
-			#[1,1,0]: hallwayTheater,
-			#[1,2,0]: theaterRoom,
-			#[0,2,0]: goldfishBox
+			(0,-4,0): kidsTable,
+			#(1,-5,0): EXIT,
+			(0,-5,0): laptopKid,
+			#(1,1,0): hallwayTheater,
+			#(1,2,0): theaterRoom,
+			#(0,2,0): goldfishBox
 			}
 
 
@@ -215,27 +218,22 @@ while quitGame == False: #could be a quit variable
 	#get current position variables
 	current_room = callRoom[tuple(playerPosition)]
 	current_room_check = current_room
+
 	if current_room.__class__.__name__ == "Room":
 		if current_room.count < 1:
 			print(current_room.initial_text)
 			current_room.count += 1
+			print(f"\nPossible exits: {current_room.allowed_movements}")
 		else:
 			print(current_room.after_text)
-		
+			print(f"\nPossible exits: {current_room.allowed_movements}")
+
 	elif current_room.__class__.__name__ == "ObjectRoom":
 		current_room.text_decision()
 
-	#elif current_room.__class__.__name__ == "ObjectRoom":
-		#print(current_room.room_text[current_room.room_item])
 	elif current_room.__class__.__name__ == "ObstacleRoom":
 		current_room.text_decision()
-		
-		#print(current_room.room_text[current_room.obstacle[0]])
-	#else:
-		#text_decision = 
-	#	print(current_room.room_text[current_room.obstacle[0]])
 	
-	print(f"\nPossible exits: {current_room.allowed_movements}")
 	while current_room_check == current_room:
 		response = input().lower()
 		if response in potential_inputs:
