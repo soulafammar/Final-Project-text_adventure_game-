@@ -17,7 +17,10 @@ class Room():
 		self.allowed_movements = []
 		self.initial_text = []
 		self.after_text = []
-		self.count = 0
+	count = 0
+
+	#def text_decision(self):
+	#	if global count > 0
 
 class ObjectRoom(Room):
 	def __init__(self):
@@ -33,7 +36,7 @@ class ObjectRoom(Room):
 			print(f"Possible exits: {self.allowed_movements}")
 		except KeyError:
 			print(self.room_text["none"])
-			print(f"Possible exits: {self.allowed_movements}")
+			#print(f"Possible exits: {self.allowed_movements}")
 
 		#if len(self.room_items) == 0:
 		#	print(self.room_text["none"])
@@ -61,7 +64,7 @@ class ObstacleRoom(Room):
 			print(f"Possible exits: {self.allowed_movements}")
 		except KeyError:
 			print(self.room_text["none"])
-			print(f"Possible exits: {self.allowed_movements}")
+			#print(f"Possible exits: {self.allowed_movements}")
 
 	
 #************************new code
@@ -176,11 +179,8 @@ def command(action): #this fucntion doesn't need further restrictions, because t
 			print("You don't have anything you can use here.")
 
 	elif action == "look":
-		text_decision
-		if current_room.__class__.__name__ == "Room":
-			print(current_room.initial_text)
-		else:
-			print(current_room.room_text[room_item])
+			current_room.text_decision()
+		
 	#elif action == "examine":
 	#	#display hidden flavor text
 	elif action == "help":
