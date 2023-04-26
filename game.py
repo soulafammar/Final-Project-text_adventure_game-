@@ -63,7 +63,7 @@ mathClass.allowed_movements.append("south")
 desolateHallway = Room()
 desolateHallway.allowed_movements.extend(["east","west","north"])
 desolateHallway.initial_text.append("You find yourself in a desolate hallway. The overhead lights make the same buzzing sound you've become so accustomed to in math class. There's a faint sound of people conversing to the west, and music playing to the east.")
-desolateHallway.after_text.append("You find yourself in a desolate hallway. The overhead lights make the same buzzing sound you've become so accustomed to in math class. There's a faint sound of people conversing to the west, and music playing to the east.")
+desolateHallway.after_text.append("You find yourself in a desolate hallway. The overhead lights make the same buzzing sound you've become so accustomed to in math class. There's a faint sound of people conversing to the west, and music playing to the east. The door back to math class is north.")
 
 goldfishKid = ObstacleRoom() #obstacle room - create new child class
 goldfishKid.allowed_movements.extend(["east","west"])
@@ -116,18 +116,28 @@ englishClass.allowed_movements.append("south")
 englishClass.allowed_commands.append("grab")
 englishClass.room_item = "hamlet"
 englishClass.room_text['hamlet'] = "You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them. An abandoned copy lies on a desk in front of you."
-englishClass.room_text["none"] = "You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them."
+englishClass.room_text["none"] = "You are in classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them."
 
 hallwayTheater = ObstacleRoom()
 hallwayTheater.allowed_movements.extend(["west","east"])
 hallwayTheater.allowed_commands.extend(["use","talk"])
+hallwayTheater.new_direction = "east" #FIGURE THE MECHANICS OF THIS OUT
 hallwayTheater.usable_item = "hamlet"
 hallwayTheater.obstacle = "theaterKid"
-hallwayTheater.room_text["theaterKid"] = '''A boy in bizarre clothing blocks your way to the entrance. \nHe exclaims: "To be, or not to be, that is the question." \nYou stare at him blankly. \n"It's Shakespeare," he says, exasperated. "You have to finish the line."'''
-hallwayTheater.room_text["none"] = "You are in the hallway. To the east there is a set of double doors. You can hear instruments playing from behind the door. To the north is flight of stairs."
+hallwayTheater.room_text["theaterKid"] = '''You walk down the hallway. To the east there is a set of double doors, and you here intruments playing from behind them. A boy in bizarre clothing blocks your way to the entrance. \nHe exclaims: "To be, or not to be, that is the question." \nYou stare at him blankly. \n"It's Shakespeare," he says, exasperated. "You have to finish the line."'''
+hallwayTheater.room_text["none"] = "You walk down the hallway. To the east there is a set of double doors. You can hear instruments playing from behind the door. To the north is flight of stairs."
 
+theaterRoom = Room()
+theaterRoom.allowed_movements.extend(["west","north"])
+theaterRoom.initial_text = "You enter a large room full of students. On your side of the room, music is playing loudly, and people are singing along, standing in rows. Music sheets litter the floor under the stands that should be holding them. A few people glance your way, but continue their rehearsal. You can see chairs, and people playing instruments on the other side. You can also see a box of snacks."
+theaterRoom.after_text = "You enter a large room full of students. On your side of the room, music is playing loudly, and people are singing along, standing in rows. Music sheets litter the floor under the stands that should be holding them. A few people glance your way, but continue their rehearsal. You can see chairs, and people playing instruments on the other side. You can also see a box of snacks."
 
-#theaterRoom =
+goldfishBox = ObjectRoom()
+goldfishBox.allowed_movements.append("south")
+goldfishBox.allowed_commands.append("grab")
+goldfishBox.room_item = "goldfish"
+goldfishBox.room_text["goldfish"] = 'You make you way to the back of the rows through the rehearsing singers, trying not to bump into anyone. A couple of them give you dirty looks for disturbing their performance, and you immediately remember why dropped theater in the 7th grade. The chairs, instruments and box of snacks are now right next to you. A handwritten note on the box reads "Congrats on opening night!"'
+goldfishBox.room_text["none"] = 'You make you way to the back of the rows through the rehearsing singers, trying not to bump into anyone. A couple of them give you dirty looks for disturbing their performance, and you immediately remember why dropped theater in the 7th grade. The chairs, instruments and box of snacks are now right next to you. A handwritten note on the box reads "Congrats on opening night!"'
 
 
 #nevermind i don't need this
@@ -141,10 +151,12 @@ hallwayTheater.room_text["none"] = "You are in the hallway. To the east there is
 #CREATE A FUNCTION THAT TAKES PLAYER LOCATION AND GIVES ROOM NAME TO USE TO CALL DESCRIPTION, OBJECT , ETC
 #calls the text for when an object is taken
 object_taken_text = {"hamlet": "You grab the book. The cover reads Hamlet",
-				"dollar": "You take the dollar, fold it up, and place it in your pocket."}
+					"dollar": "You take the dollar, fold it up, and place it in your pocket.",
+					"goldfish": "You dig you hand into the box of snacks and pull out a bag of Special Edition Disney Princess Goldfish. Your favorite."}
 
 object_used_text = {"hamlet": "You pull out Hamlet, open the book, and read:\nTo be, or not to be, that is the question:\nWhether 'tis nobler in the mind to suffer\nThe slings and arrows of outrageous fortune,\nOr to take arms against a sea of troubles\nAnd by opposing end them.\nThe boy's eyes well with tears, he nods, and steps aside from the door.",
 					"dollar": "You pull out the dollar bill and put it into the vending machine. It whirs, then drops out an energy drink can.",
+					"goldfish": "You pull out a the bag of Disney Princess Edition Goldfish and hand it to the boy. A sigh escapes your lips.The boy gratefully accepts the goldfish, and gives you a dollar bill as a token of appreciation."
 					"monster": "You offer the energy drink, and the boy gratefully takes the can. He pops it open and chugs it down within seconds. He looks ready to talk."}
 
 
@@ -215,8 +227,8 @@ callRoom = {(0,0,0): mathClass,
 			#(1,-5,0): EXIT,
 			(0,-5,0): laptopKid,
 			(1,1,0): hallwayTheater,
-			#(1,2,0): theaterRoom,
-			#(0,2,0): goldfishBox
+			(1,2,0): theaterRoom,
+			(0,2,0): goldfishBox
 			}
 
 
