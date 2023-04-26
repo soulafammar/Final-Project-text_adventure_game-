@@ -7,7 +7,15 @@ class Room():
 		self.allowed_movements = []
 		self.initial_text = []
 		self.after_text = []
-		self.count = 0
+	count = 0
+
+	def text_decision(self):
+		if count == 0:
+			print(self.initial_text)
+			print(f"Possible exits: {self.allowed_movements}")
+		else:
+			print(self.after_text)
+			print(f"Possible exits: {self.allowed_movements}")
 
 class ObjectRoom(Room):
 	def __init__(self):
@@ -23,7 +31,7 @@ class ObjectRoom(Room):
 			print(f"Possible exits: {self.allowed_movements}")
 		except KeyError:
 			print(self.room_text["none"])
-			#print(f"Possible exits: {self.allowed_movements}")
+			print(f"Possible exits: {self.allowed_movements}")
 
 
 	def new(attempt):
@@ -43,7 +51,7 @@ class ObstacleRoom(Room):
 			print(f"Possible exits: {self.allowed_movements}")
 		except KeyError:
 			print(self.room_text["none"])
-			#print(f"Possible exits: {self.allowed_movements}")
+			print(f"Possible exits: {self.allowed_movements}")
 
 	
 #************************new code
@@ -107,16 +115,16 @@ englishClass = ObjectRoom()
 englishClass.allowed_movements.append("south")
 englishClass.allowed_commands.append("grab")
 englishClass.room_item = "hamlet"
-#englishClass.room_items["hamlet"] = "You grab the book. The cover reads Hamlet"
 englishClass.room_text['hamlet'] = "You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them. An abandoned copy lies on a desk in front of you."
 englishClass.room_text["none"] = "You enter a classroom full of chattering students. Each student has a laptop open and a copy of the same pale yellow book in hand, discussing it with the others next to them."
 
-theaterKid = ObstacleRoom()
-theaterKid.allowed_movements.extend(["west","east"])
-theaterKid.allowed_commands.extend(["use","talk"])
-theaterKid.obstacle = "theaterKid"
-theaterKid.room_text["theaterKid"] = '''A boy in bizarre clothing blocks your way to the entrance. He exclaims: "To be, or not to be, that is the question." You stare at him blankly. "It's Shakespeare," he says, exasperated. "You have to finish the line."'''
-theaterKid.room_text["none"] = "You are in the hallway. To the east there is a set of double doors. You can hear instruments playing from behind the door. To the north is flight of stairs."
+hallwayTheater = ObstacleRoom()
+hallwayTheater.allowed_movements.extend(["west","east"])
+hallwayTheater.allowed_commands.extend(["use","talk"])
+hallwayTheater.usable_item = "hamlet"
+hallwayTheater.obstacle = "theaterKid"
+hallwayTheater.room_text["theaterKid"] = '''A boy in bizarre clothing blocks your way to the entrance. \nHe exclaims: "To be, or not to be, that is the question." \nYou stare at him blankly. \n"It's Shakespeare," he says, exasperated. "You have to finish the line."'''
+hallwayTheater.room_text["none"] = "You are in the hallway. To the east there is a set of double doors. You can hear instruments playing from behind the door. To the north is flight of stairs."
 
 
 #theaterRoom =
@@ -135,7 +143,9 @@ theaterKid.room_text["none"] = "You are in the hallway. To the east there is a s
 object_taken_text = {"hamlet": "You grab the book. The cover reads Hamlet",
 				"dollar": "You take the dollar, fold it up, and place it in your pocket."}
 
-
+object_used_text = {"hamlet": "You pull out Hamlet, open the book, and read:\nTo be, or not to be, that is the question:\nWhether 'tis nobler in the mind to suffer\nThe slings and arrows of outrageous fortune,\nOr to take arms against a sea of troubles\nAnd by opposing end them.\nThe boy's eyes well with tears, he nods, and steps aside from the door.",
+					"dollar": "You pull out the dollar bill and put it into the vending machine. It whirs, then drops out an energy drink can.",
+					"monster": "You offer the energy drink, and the boy gratefully takes the can. He pops it open and chugs it down within seconds. He looks ready to talk."}
 
 
 #initalizes player position (x,y,z)/(-north/+south,-west/+east,-down/+up) at the origin, math class
@@ -175,9 +185,9 @@ def command(action): #this fucntion doesn't need further restrictions, because t
 		
 	elif action == "use":
 		if current_room.usable_item in inventory:
-			print(dict.values(current_room.usable_item))
-			del current_room.usable_item
+			print(object_used_text[current_room.usable_item])
 			inventory.remove(current_room.usable_item)
+			del current_room.usable_item
 		else:
 			print("You don't have anything you can use here.")
 
@@ -204,7 +214,7 @@ callRoom = {(0,0,0): mathClass,
 			(0,-4,0): kidsTable,
 			#(1,-5,0): EXIT,
 			(0,-5,0): laptopKid,
-			#(1,1,0): hallwayTheater,
+			(1,1,0): hallwayTheater,
 			#(1,2,0): theaterRoom,
 			#(0,2,0): goldfishBox
 			}
