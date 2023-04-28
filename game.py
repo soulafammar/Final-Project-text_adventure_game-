@@ -125,8 +125,8 @@ hallwayTheater.allowed_commands.extend(["use","talk"])
 hallwayTheater.new_direction = "east" #FIGURE THE MECHANICS OF THIS OUT
 hallwayTheater.usable_item = "hamlet"
 hallwayTheater.obstacle = "theaterKid"
-hallwayTheater.room_text["theaterKid"] = '''You walk down the hallway. To the east there is a set of double doors, and you here intruments playing from behind them. A boy in bizarre clothing blocks your way to the entrance. \nHe exclaims: "To be, or not to be, that is the question." \nYou stare at him blankly. \n"It's Shakespeare," he says, exasperated. "You have to finish the line."'''
-hallwayTheater.room_text["none"] = "You walk down the hallway. To the east there is a set of double doors. You can hear instruments playing from behind the door. To the north is flight of stairs."
+hallwayTheater.room_text["theaterKid"] = '''You are next to a set of double doors. You can hear instruments playing from behind the door. To the north is a flight of stairs? \nA boy in bizarre clothing blocks your way to the entrance. \nHe exclaims: "To be, or not to be, that is the question." \nYou stare at him blankly. \n"It's Shakespeare," he says, exasperated. "You have to finish the line."'''
+hallwayTheater.room_text["none"] = "You are in the hallway. To the east there is a set of double doors. You can hear instruments playing from behind the door. To the north is flight of stairs."
 
 theaterRoom = Room()
 theaterRoom.allowed_movements.extend(["west","north"])
@@ -195,6 +195,7 @@ def command(action): #this fucntion doesn't need further restrictions, because t
 		inventory.append(str(current_room.room_item))
 		print(object_taken_text[current_room.room_item])
 		del current_room.room_item
+		del current_room.obstacle
 		
 	elif action == "use":
 		if current_room.usable_item in inventory:
