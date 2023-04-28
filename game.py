@@ -233,29 +233,14 @@ callRoom = {(0,0,0): mathClass,
 			}
 
 
-quitGame = 0
-#THIS IS THE MAIN WHILE LOOP THAT DECIDES WHAT TO DO WITH PLAYER RESPONSES
+quitGame = False
 last_direction = None
 response = input()
 while quitGame == False: #could be a quit variable
 	#get current position variables
 	current_room = callRoom[tuple(playerPosition)]
 	current_room_check = current_room
-
-	if current_room.__class__.__name__ == "Room":
-		if current_room.count < 1:
-			print(current_room.initial_text)
-			current_room.count += 1
-			print(f"\nPossible exits: {current_room.allowed_movements}")
-		else:
-			print(current_room.after_text)
-			print(f"\nPossible exits: {current_room.allowed_movements}")
-
-	elif current_room.__class__.__name__ == "ObjectRoom":
-		current_room.text_decision()
-
-	elif current_room.__class__.__name__ == "ObstacleRoom":
-		current_room.text_decision()
+	current_room.text_decision()
 	
 	while current_room_check == current_room:
 		response = input().lower()
@@ -277,15 +262,7 @@ while quitGame == False: #could be a quit variable
 				elif response == "help":
 					print(help_text)
 				elif response == "look":
-						if current_room.__class__.__name__ == "Room":
-							print(current_room.initial_text)
-						elif current_room.__class__.__name__ == "ObstacleRoom":
-							current_room.text_decision()
-							#print(current_room.room_text[current_room.obstacle[0]])
-						else:
-							current_room.text_decision()
-							#print(current_room.room_text[current_room.room_item])
-						
+					current_room.text_decision()		
 				else:
 					print("You can't do that right now.")
 		else:
