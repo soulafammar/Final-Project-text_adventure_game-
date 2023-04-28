@@ -10,12 +10,12 @@ class Room():
 	count = 0
 
 	def text_decision(self):
-		if count == 0:
-			print(self.initial_text)
-			print(f"Possible exits: {self.allowed_movements}")
+		if self.count == 0:
+			print(f"\n{self.initial_text}")
+			print(f"\nPossible exits: {self.allowed_movements}")
 		else:
-			print(self.after_text)
-			print(f"Possible exits: {self.allowed_movements}")
+			print(f"\n{self.after_text}")
+			print(f"\nPossible exits: {self.allowed_movements}")
 
 class ObjectRoom(Room):
 	def __init__(self):
@@ -27,11 +27,11 @@ class ObjectRoom(Room):
 
 	def text_decision(self):
 		try:
-			print(self.room_text[self.room_item])
-			print(f"Possible exits: {self.allowed_movements}")
+			print(f"\n{self.room_text[self.room_item]}")
+			print(f"\nPossible exits: {self.allowed_movements}")
 		except KeyError:
-			print(self.room_text["none"])
-			print(f"Possible exits: {self.allowed_movements}")
+			print(f"\n{self.room_text['none']}")
+			print(f"\nPossible exits: {self.allowed_movements}")
 
 
 	def new(attempt):
@@ -47,11 +47,12 @@ class ObstacleRoom(Room):
 
 	def text_decision(self):
 		try:
-			print(self.room_text[self.obstacle])
-			print(f"Possible exits: {self.allowed_movements}")
+			print(f"\n{self.room_text[self.obstacle]}")
+			print(f"\nPossible exits: {self.allowed_movements}")
 		except KeyError:
-			print(self.room_text["none"])
-			print(f"Possible exits: {self.allowed_movements}")
+			print(f"\n{self.room_text['none']}")
+			print(f"\nPossible exits: {self.allowed_movements}")
+
 
 	
 #************************new code
