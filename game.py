@@ -63,8 +63,8 @@ mathClass.allowed_movements.append("south")
 
 desolateHallway = Room()
 desolateHallway.allowed_movements.extend(["east","west","north"])
-desolateHallway.initial_text.append("You find yourself in a desolate hallway. The overhead lights make the same buzzing sound you've become so accustomed to in math class. There's a faint sound of people conversing to the west, and music playing to the east.")
-desolateHallway.after_text.append("You find yourself in a desolate hallway. The overhead lights make the same buzzing sound you've become so accustomed to in math class. There's a faint sound of people conversing to the west, and music playing to the east. The door back to math class is north.")
+desolateHallway.initial_text.append("You find yourself in a desolate hallway. The overhead lights make the same buzzing sound you've become so accustomed to in math class. There's a faint sound of people conversing to the west, and music playing behind a set of double doors to the east. Someone stands in front of the doors.")
+desolateHallway.after_text.append("You find yourself in a desolate hallway. The overhead lights make the same buzzing sound you've become so accustomed to in math class. There's a faint sound of people conversing to the west, and music playing behind a set of double doors to the east. Someone stands in front of the doors.")
 
 goldfishKid = ObstacleRoom() #obstacle room - create new child class
 goldfishKid.allowed_movements.extend(["east","west"])
