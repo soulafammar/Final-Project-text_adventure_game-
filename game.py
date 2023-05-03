@@ -44,14 +44,52 @@ class ObstacleRoom(Room):
 		self.obstacle = ""
 		self.new_direction = ""
 		self.item_received = ""
-
+		self.speech = {}
 	def text_decision(self):
-		try:
-			print(f"\n{self.room_text[self.obstacle]}")
-			print(f"\nPossible exits: {self.allowed_movements}")
-		except KeyError and AttributeError:
-			print(f"\n{self.room_text['none']}")
-			print(f"\nPossible exits: {self.allowed_movements}")
+			try:
+				print(f"\n{self.room_text[self.obstacle]}")
+				print(f"\nPossible exits: {self.allowed_movements}")
+			except KeyError and AttributeError:
+				print(f"\n{self.room_text['none']}")
+				print(f"\nPossible exits: {self.allowed_movements}")
+	def convo(self):
+		response = ""
+		response = input('''You take a deep breath, and tell the kids about what's under the table. One of the girls looks coldly at you and asks: "What do you say?"\n''')
+		if response.lower() == "please":
+			print('''The girl suddenly smiles. "Okay!" she says, and ask her friends to scoot their chairs, giving you space to pick it up.''')
+			current_room.allowed_movements.append(current_room.new_direction)
+		else:
+			print("The kids at the table burst into laughter. You slink away in embarrassment.")
+
+class Exit(Room):
+	def __init__(self):
+		super().__init__()
+		self.room_text = {}
+		self.new_direction = ""
+
+	password = ""
+		
+	def text_decision(self):
+			try:
+				print(f"\n{self.room_text[self.obstacle]}")
+				print(f"\nPossible exits: {self.allowed_movements}")
+			except KeyError and AttributeError:
+				print(f"\n{self.room_text['none']}")
+				print(f"\nPossible exits: {self.allowed_movements}")
+
+	def unlock_attempt(self, guess):
+		if guess == self.password:
+			print('The keypad gives a "ding", and you hear the doors click.')
+			current_room.allowed_movements.append(current_room.new_direction)
+		else:
+			print('''The keypad gives an angry "beep". You try the doors, but they still won't budge''')
+
+class END(Room):
+	def __init__(self):
+		pass
+	def conclusion(self):
+		print("You step outside onto the grass and feel the Sun's warm rays hit your face. The doors slam shut behind you, and you walk home.\n\nCongrats! You made it out!")
+		quit()
 
 
 	
@@ -88,8 +126,9 @@ vendingMachine.allowed_commands.append("use")
 vendingMachine.item_received = "energy drink"
 vendingMachine.obstacle = "vendingMachine"
 vendingMachine.usable_item = "dollar" 
-vendingMachine.room_text["none"] = "here is the vending machine, there's an empty slot where the energy drink was"
-vendingMachine.room_text["vendingMachine"] = "here is the vending machine, oh look there's an energy drink"
+vendingMachine.room_text["none"] = "You walk down the hallway. You stand next to a vending machine, a big metal box pressed up against the cold brick wall of the hallway. It's filled with candy, chip bags, and drinks with concerning amounts of caffeine. There's an empty spot where the last energry drink was. Loud, overlapping conversations echo in the hallway from the west, the cafeteria. The hallway continues to the east."
+vendingMachine.room_text["vendingMachine"] = "You walk down the hallway. You stand next to a vending machine, a big metal box up against the cold brick wall of the hallway. It's filled with candy, chip bags, and drinks with concerning amounts of caffeine. Loud, overlapping conversations echo in the hallway from the west, the cafeteria. The hallway continues to the east. "
+
 
 cafEntrance = Room()
 cafEntrance.allowed_movements.extend(["north","east","west"])
@@ -98,18 +137,18 @@ cafEntrance.initial_text.append("You are in very large, very noisy lunchroom. Gr
 #EXIT = pass #we'll deal with that later
 
 laptopKid = ObstacleRoom() # figure the mechanics of this out
-laptopKid.room_text["none"] = "oh look its the kid, you already talked to him"
-laptopKid.room_text["laptopKid"] = "oh look its the kid, you should talk to him"
-laptopKid.usable_item["monster"] = "You offer the energy drink, and the boy gratefully takes the can. He pops it open and chugs it down within seconds. He looks ready to talk."
+laptopKid.room_text["none"] = "You are next to the boy with the laptop, "
+laptopKid.room_text["laptopKid"] = "You walk towards the boy with the laptop, and with a closer view, you can see a pale, sickly skinned boy. His bloodshot eyes are lit up by the screen of his laptop."
+laptopKid.usable_item["energy drink"] = "You offer the energy drink, and the boy gratefully takes the can. He pops it open and chugs it down within seconds. He looks ready to talk."
 laptopKid.allowed_commands.extend(["use","talk"])
 laptopKid.allowed_movements.extend(["east","south"])
 laptopKid.obstacle = "laptopKid"
-laptopKid.initial_speech = '''i'm running on sleep hours of 3 from night last" he says, delirious. "But I have to stay awake until the semifinals end. I need a pick me up. Find me something, then we'll talk.'''
-laptopKid.after_speech = '''You ask again about the locked door. "Oh, yeah, that's totally normal." He says, eyes never leaving the screen. "They lock them all the time. WHAT? That's a total foul!" He shouts at the laptop, then recomposes himself. "You can try to guess the access code, but it's always some really obscure phras- ARE YOU KIDDING ME? Where did they get this ref? Oh, but I think I did see one of the teachers, Mr. Perison, drop some piece of paper or something after he walked away from the door. It fell under the popular kids table, so there's pretty much no hope for that. Unless you somehow make them leave.'''
+laptopKid.speech["laptopKid"] = '''You try to ask him about the locked door, but he interrupts you. "I'm running on sleep hours of 3 from night last" he says, delirious. "But I have to stay awake until the semifinals end. I need a pick me up. Find me something, then we'll talk."'''
+laptopKid.speech["none"] = '''You ask again about the locked door. "Oh, yeah, that's totally normal." He says, eyes never leaving the screen. "They lock them all the time. WHAT? That's a total foul!" He shouts at the laptop, then recomposes himself. "You can try to guess the access code, but it's always some really obscure phras- ARE YOU KIDDING ME? Where did they get this ref? Oh, but I think I did see one of the teachers, Mr. Perison, drop some piece of paper or something after he walked away from the door. It fell under the popular kids table, so there's pretty much no hope for that. Maybe you can tell them please," he laughs.'''
 
 kidsTable = ObjectRoom()
 kidsTable.allowed_movements.extend(["south","west"])
-#kidsTable.allowed_commands.append("grab")
+kidsTable.allowed_commands.append("talk")
 kidsTable.room_item = "note"
 kidsTable.room_text["note"] = "You are right next to the group of kids. Being so close to them makes you feel incredibly nervous. Your legs stiffen. You realize your shoes are untied, and that your socks are mismatched. The room starts to feel hotter, and one of the kids glances your way. You quickly look down at the floor, and see something under their table."
 kidsTable.room_text["none"] = "You are right next to the group of kids. Being so close to them makes you feel incredibly nervous. Your legs stiffen. You realize your shoes are untied, and that your socks are mismatched. The room starts to feel hotter, and one of the kids glances your way. You quickly look down at the floor."
@@ -143,6 +182,17 @@ goldfishBox.room_item = "goldfish"
 goldfishBox.room_text["goldfish"] = 'You make you way to the back of the rows through the rehearsing singers, trying not to bump into anyone. A couple of them give you dirty looks for disturbing their performance, and you immediately remember why dropped theater in the 7th grade. The chairs, instruments and box of snacks are now right next to you. A handwritten note on the box reads "Congrats on opening night!"'
 goldfishBox.room_text["none"] = 'You are in the back of the room, after weaving through the rehearsing singers and trying not to bump into anyone. The ones that gave you dirty looks for disturbing their performance glare back at you occasionally. The chairs and instruments are now right next to you. The box of snacks you rummaged through for the Goldfish lays on top of a table. Despite the temptation, you decide it would be best to refrain from taking another.'
 
+lockedDoors = Exit()
+lockedDoors.room_text["passcode"] = "You walk towards the doors and try to open them, but they don't budge. Locked. A closer look and you see a keypad next to the handle. The keypad has every letter of the alphabet. You mutter under your breath. Looking around, you see someone sitting alone in the corner of the cafeteria, eyes glued to the screen of the laptop sitting on his legs. Maybe he can help."
+lockedDoors.room_text["none"] = "You walk towards the doors and push them open. something about sunlight"
+lockedDoors.obstacle = "passcode"
+lockedDoors.password = "brown sugar boba"
+lockedDoors.allowed_movements.extend({"north","east"})
+lockedDoors.allowed_commands.append("use")
+lockedDoors.new_direction = "west"
+
+ENDING = END()
+#ENDING.text = "You step outside onto the grass and feel the Sun's warm rays hit your face.\n\nCongrats! You made it out!"
 
 
 #******************** relevant dictionaries/functions
@@ -156,7 +206,7 @@ object_taken_text = {"hamlet": "You grab the book. The cover reads Hamlet",
 object_used_text = {"hamlet": "You pull out Hamlet, open the book, and read:\nTo be, or not to be, that is the question:\nWhether 'tis nobler in the mind to suffer\nThe slings and arrows of outrageous fortune,\nOr to take arms against a sea of troubles\nAnd by opposing end them.\nThe boy's eyes well with tears, he nods, and steps aside from the door.",
 					"dollar": "You pull out the dollar bill and put it into the vending machine. It whirs, then drops out an energy drink can.",
 					"goldfish": "You pull out a the bag of Disney Princess Edition Goldfish and hand it to the boy. A sigh escapes your lips. The boy gratefully accepts the goldfish, and gives you a dollar bill as a token of appreciation.",
-					"monster": "You offer the energy drink, and the boy gratefully takes the can. He pops it open and chugs it down within seconds. He looks ready to talk."}
+					"energy drink": "You offer the energy drink, and the boy gratefully takes the can. He pops it open and chugs it down within seconds. He looks ready to talk."}
 
 note_contents = '''
 	a delicious drink
@@ -214,7 +264,11 @@ def command(action): #this fucntion doesn't need further restrictions, because t
 		
 		
 	elif action == "use":
-		if current_room.usable_item in inventory:
+		if current_room.__class__.__name__ == "Exit":
+				guess = input("You take a look at the keypad, and punch in the passcode:\n").lower()
+				current_room.unlock_attempt(guess)
+
+		elif current_room.usable_item in inventory:
 			print(f"{object_used_text[current_room.usable_item]}\n")
 			inventory.remove(current_room.usable_item)
 			del current_room.usable_item
@@ -225,6 +279,7 @@ def command(action): #this fucntion doesn't need further restrictions, because t
 					inventory.append(str(current_room.item_received))
 					del current_room.item_received
 				del current_room.obstacle
+			
 		else:
 			print("You don't have anything you can use here.")
 
@@ -241,8 +296,14 @@ def command(action): #this fucntion doesn't need further restrictions, because t
 	elif action == "inventory":
 		print(inventory)
 		
-	#elif action == "talk":
-	#	#display hidden dialogue text for certain character
+	elif action == "talk":
+		if str(callRoom[tuple(playerPosition)]) == "kidsTable":
+			current_room.convo()
+		elif current_room.__class__.__name__ == "Obstacle Room":
+			try:
+				print(current_room.speech[current_room.obstacle])
+			except KeyError:
+				print(current_room.speech["none"])
 
 callRoom = {(0,0,0): mathClass,
 			(1,0,0): desolateHallway,
@@ -252,7 +313,8 @@ callRoom = {(0,0,0): mathClass,
 			(1,-3,0): vendingMachine,
 			(1,-4,0): cafEntrance,
 			(0,-4,0): kidsTable,
-			#(1,-5,0): EXIT,
+			(1,-5,0): lockedDoors,
+			(1,-6,0): ENDING,
 			(0,-5,0): laptopKid,
 			(1,1,0): hallwayTheater,
 			(1,2,0): theaterRoom,
@@ -271,16 +333,17 @@ while quitGame == False: #could be a quit variable
 	if current_room.__class__.__name__ == "Room":
 		current_room.count += 1
 		current_room.text_decision()
+	elif current_room.__class__.__name__ == "END":
+		current_room.conclusion()
 	else:
 		current_room.text_decision()
 	
 	while current_room_check == current_room:
-		response = input().lower()
+		response = input().lower().strip()
 		if response in potential_inputs:
 			if response in potential_movements:
 				if response in current_room.allowed_movements:
 					move(response)
-					#last_direction = response
 					break
 				else:
 					print("You can't go that way, you silly goose.")
@@ -294,7 +357,10 @@ while quitGame == False: #could be a quit variable
 				elif response == "help":
 					print(help_text)
 				elif response == "look":
-					current_room.text_decision()		
+					current_room.text_decision()
+				elif response == "examine":
+					if 'note' in inventory:
+						print(note_contents)
 				else:
 					print("You can't do that right now.")
 		else:
