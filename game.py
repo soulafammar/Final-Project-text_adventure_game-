@@ -1,3 +1,5 @@
+import pickle
+
 
 class Room():
 	def __init__(self):
@@ -233,7 +235,7 @@ note_contents = '''You look at what's on the note, and realize it's a poem:
 playerPosition = [0,0,0]
 inventory = []
 
-potential_inputs = ["grab", "use", "talk", "look", "examine", "help", "inventory", "north", "south", "west", "east"]
+potential_inputs = ["save", "load", "grab", "use", "talk", "look", "examine", "help", "inventory", "north", "south", "west", "east"]
 potential_movements = ["north","south", "west", "east"]
 potential_commands = ["grab", "use", "talk", "look", "examine", "help", "inventory"]
 help_text = "Potential commands: grab, use, talk, look, examine, help, inventory. Potential movements: north, south, west, east. Type 'quit' to end the game.\nType the direction you want to move or action you want to perform, and nothing else. For example, if you see something that you want to take, simply type 'grab'. In any given room, you will be given a set of potential directions you can go."
@@ -242,6 +244,21 @@ help_text = "Potential commands: grab, use, talk, look, examine, help, inventory
 
 print(help_text)
 print("Press 'Enter' to continue.")
+
+
+def save():
+	with open('game.dat','wb') as f:
+		pickle.dump(Room,f)
+	print("\nGame saved!\n")
+
+def load():
+	global Room
+	try:
+		with open("game.dat",'rb') as f:
+			Room = pickle.load(f)
+		print("\nGame loaded!\n")
+	except FileNotFoundError:
+		print("\nGame file not found!\n")
 
 
 def move(direction): #this function doesn't need further restrictions, because the only time it is called is after it passes certain resrictions
@@ -371,8 +388,15 @@ while quitGame == False: #could be a quit variable
 						print(note_contents)
 					else:
 						print("\nYou can't do that right now.\n")
+				
 				else:
 					print("\nYou can't do that right now.\n")
+
+			elif response == "save":
+				save()
+								
+			elif response == "load":
+				load()
 
 			elif response == "quit":
 				confirmation = input("Are you sure you want to quit the game? You'll have to restart. (yes/no):\n")
