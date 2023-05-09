@@ -109,8 +109,8 @@ mathClass.count = -1
 
 desolateHallway = Room()
 desolateHallway.allowed_movements.extend(["east","west","north"])
-desolateHallway.initial_text = "You find yourself in a desolate hallway. The overhead lights make the same buzzing sound you've become so accustomed to in math class. The hallway continues to the west, and music playing behind a set of double doors to the east. Someone stands in front of the doors."
-desolateHallway.after_text = "You find yourself in a desolate hallway. The overhead lights make the same buzzing sound you've become so accustomed to in math class. The hallway continues to the west, and music playing behind a set of double doors to the east. Someone stands in front of the doors."
+desolateHallway.initial_text = "You find yourself in a desolate hallway. The overhead lights make the same buzzing sound you've become so accustomed to in math class. The hallway continues to the west, and music plays behind a set of double doors to the east. Someone stands in front of the doors."
+desolateHallway.after_text = "You find yourself in a desolate hallway. The overhead lights make the same buzzing sound you've become so accustomed to in math class. The hallway continues to the west, and music plays behind a set of double doors to the east. Someone stands in front of the doors."
 
 goldfishKid = ObstacleRoom()
 goldfishKid.allowed_movements.extend(["east","west"])
@@ -170,7 +170,7 @@ englishClass.room_text["none"] = "You are in classroom full of chattering studen
 
 hallwayTheater = ObstacleRoom()
 hallwayTheater.allowed_movements.append("west")
-hallwayTheater.allowed_commands.extend(["use","talk"])
+hallwayTheater.allowed_commands.append("use")
 hallwayTheater.new_direction = "east" #FIGURE THE MECHANICS OF THIS OUT
 hallwayTheater.usable_item = "hamlet"
 hallwayTheater.obstacle = "theaterKid"
@@ -211,7 +211,7 @@ object_taken_text = {"hamlet": "You grab the book. The cover reads Hamlet.",
 					"note": "You climb under the table and find a sticky note with some writing on it."}
 #calls the text for when an object is used
 object_used_text = {"hamlet": "You pull out Hamlet, open the book, and read:\n'To be, or not to be, that is the question:\nWhether 'tis nobler in the mind to suffer\nThe slings and arrows of outrageous fortune,\nOr to take arms against a sea of troubles\nAnd by opposing end them.'\nThe boy's eyes well with tears, he nods, and steps aside from the door.",
-					"dollar": "You pull out the dollar bill and put it into the vending machine. It whirs, then drops out an energy drink can.",
+					"dollar": "You pull out the dollar bill and put it into the vending machine. It whirs, then drops out an energy drink can. You take it.",
 					"goldfish": "You pull out a the bag of Disney Princess Edition Goldfish and hand it to the boy. A sigh escapes your lips. The boy gratefully accepts the goldfish, and gives you a dollar bill as a token of appreciation.",
 					"energy drink": "You offer the energy drink, and the boy gratefully takes the can. He pops it open and chugs it down within seconds. He looks ready to talk."}
 
@@ -329,6 +329,8 @@ def command(action): #this fucntion doesn't need further restrictions, because t
 				print(f"\n{current_room.speech[current_room.obstacle]}\n")
 			except KeyError and AttributeError:
 				print(f"\n{current_room.speech['none']}\n")
+		else:
+			print("You can't do that right now.")
 
 callRoom = {(0,0,0): mathClass,
 			(1,0,0): desolateHallway,
