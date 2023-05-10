@@ -238,9 +238,9 @@ inventory = []
 potential_inputs = ["save", "load", "grab", "use", "talk", "look", "examine", "help", "inventory", "north", "south", "west", "east"]
 potential_movements = ["north","south", "west", "east"]
 potential_commands = ["grab", "use", "talk", "look", "examine", "help", "inventory"]
-help_text = "Potential commands: grab, use, talk, look, examine, help, inventory. Potential movements: north, south, west, east. Type 'quit' to end the game.\nType the direction you want to move or action you want to perform, and nothing else. For example, if you see something that you want to take, simply type 'grab'. In any given room, you will be given a set of potential directions you can go."
+help_text = "Potential movements: north, south, west, east. Potential commands:\ngrab - take an object \nuse - use an item in your inventory\ntalk - speak with people in the room you are in\nlook - room description is displayed again\nexamine - take a closer look at a special object\nhelp - displays this text again\ninventory - displays current inventory\n\nType 'quit' to end the game. Type the direction you want to move or action you want to perform, and nothing else. For example, if you see something that you want to take, simply type 'grab'. In any given room, you will be given a set of potential directions you can go."
 
-#**************************** the main game loop
+
 
 print(help_text)
 print("Press 'Enter' to continue.")
@@ -311,13 +311,6 @@ def command(action): #this fucntion doesn't need further restrictions, because t
 			except AttributeError:
 				print("\nYou can't do that right now.\n")
 
-#				print(f"\n{object_used_text[current_room.usable_item]}\n")
-#				inventory.remove(current_room.usable_item)
-#				del current_room.usable_item
-#				if current_room.__class__.__name__ == "ObstacleRoom":
-#					
-		
-			
 		else:
 			print("You don't have anything you can use here.")
 	
@@ -348,7 +341,7 @@ callRoom = {(0,0,0): mathClass,
 			(0,2,0): goldfishBox
 			}
 
-
+#**************************** the main game loop
 quitGame = False
 last_direction = None
 response = input()
